@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<included>
+
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
+
+    <property name="LOG_PATH" value="${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}" />
+    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%rEx}"/>
+    <property name="REPORT_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} ---- [${PID:- }-%t]%m%n${LOG_EXCEPTION_CONVERSION_WORD:-%rEx}"/>
+    <property name="CONSOLE_LOG_PATTERN" value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+
+    <!-- console -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+    <!-- all -->
+    <appender name="server-console" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <Append>true</Append>
+        <File>${LOG_PATH}/ssf-console.log</File>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/ssf-console.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!--<maxHistory>15</maxHistory>-->
+        </rollingPolicy>
+    </appender>
+
+    <!-- error -->
+    <appender name="server-error"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <Append>true</Append>
+        <File>${LOG_PATH}/ssf-error.log</File>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/ssf-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <!--&lt;!&ndash; error &ndash;&gt;-->
+    <!--<appender name="druid-error"-->
+              <!--class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+        <!--<Append>true</Append>-->
+        <!--<File>${LOG_PATH}/ssf-druid.log</File>-->
+        <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+            <!--<level>ERROR</level>-->
+            <!--<onMatch>ACCEPT</onMatch>-->
+            <!--<onMismatch>DENY</onMismatch>-->
+        <!--</filter>-->
+        <!--<encoder>-->
+            <!--<pattern>${FILE_LOG_PATTERN}</pattern>-->
+        <!--</encoder>-->
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+            <!--<fileNamePattern>${LOG_PATH}/ssf-druid.%d{yyyy-MM-dd}.log</fileNamePattern>-->
+        <!--</rollingPolicy>-->
+    <!--</appender>-->
+
+    <!--&lt;!&ndash; additivity="false" 表示不在root中输出&ndash;&gt;-->
+    <!--<logger name="com.alibaba.druid" level="INFO" >-->
+        <!--<appender-ref ref="druid-error" />-->
+    <!--</logger>-->
+
+    <logger name="com.atomikos" level="ERROR"/>
+
+    <root level="INFO">
+        <appender-ref ref="server-console" />
+        <appender-ref ref="server-error" />
+        <appender-ref ref="CONSOLE" />
+    </root>
+</included>

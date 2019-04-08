@@ -1,0 +1,71 @@
+html,body{
+    margin: 0;
+    padding: 0;
+    background-color: #f4f5f0;
+}
+.wid{
+    width:50%;
+    margin: 0px;
+    padding: 0px;
+}
+.bod{
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+.biaoti{
+    height: 10%;
+    color: #4e76ab;
+    border-bottom: 1px dashed #4e76ab;
+    margin: 10px;
+    padding-bottom: 5px;
+
+}
+.neirong{
+    margin: 10px;
+    width: 100%;
+}
+.neirong p{
+    font-family: 微软雅黑;
+    font-size: 15px;
+    color: #818181;
+    margin: 0px;
+    padding: 1px;
+}
+.neirong a{
+    display: block;
+    color: #818181;
+
+}
+.btn_l{
+    height: 10%;
+    background-color: #4e76ab;
+    border-radius: 0px;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 49.5%;
+}
+.btn_r{
+    height:10%;
+    background-color: #4e76ab;
+    border-radius: 0px;
+         position: fixed;
+         bottom: 0px;
+         right: 0px;
+         width: 49.5%;
+     }
+.neirong_btm{
+  margin-left: 30px;
+    width: 100%;
+}
+.neirong_btm p{
+    font-family: 微软雅黑;
+    font-size: 15px;
+    color: #818181;
+    margin: 0px;
+    padding: 1px;
+}
+.tanchu{
+    margin-top: 50%;
+}

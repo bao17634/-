@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qm.volkswagenChina.partsTransaction.smallUser.dao.UsersDao">
+  <resultMap id="BaseResultMap" type="com.qm.volkswagenChina.partsTransaction.smallUser.entity.UsersVo">
+      <result column="id" property="id"/>
+      <result column="nickName" property="nickName"/>
+      <result column="avatarUrl" property="avatarUrl"/>
+      <result column="gender" property="gender"/>
+      <result column="city" property="city"/>
+      <result column="province" property="province"/>
+      <result column="country" property="country"/>
+      <result column="language" property="language"/>
+      <result column="openId" property="openId"/>
+      <result column="tel" property="tel"/>
+      <result column="userName" property="userName"/>
+      <result column="type" property="type"/>
+      <result column="status" property="status"/>
+  </resultMap>
+    <insert id="save">
+        INSERT INTO users(nickName,avatarUrl,gender,city,province,country,language,openId,tel,userName,type)
+        VALUE (#{nickName},#{avatarUrl},#{gender},#{city},#{province},#{country},#{language},#{openId},#{tel},#{userName},#{type})
+    </insert>
+    <select id="findByOpenId" resultMap="BaseResultMap">
+        SELECT * from users where openid=#{openId}
+    </select>
+    <update id="uploadByOpenId">
+        update users set nickname=#{nickName},avatarurl=#{avatarUrl},gender=#{gender},city=#{city},province=#{province},country=#{country},language=#{language} where openid=#{openId}
+    </update>
+    <update id="deleteByOpenId">
+        delete from  users  where openid=#{openId}
+    </update>
+    <update id="bindUserById">
+        update users set tel = #{tel},userName=#{userName} where id=#{id}
+    </update>
+
+    <select id="getCreaterName" resultMap="BaseResultMap">
+        SELECT userName from users where id=#{id}
+    </select>
+    <select id="getRecipientName" resultMap="BaseResultMap">
+        SELECT userName from users where id=#{id}
+    </select>
+
+</mapper>

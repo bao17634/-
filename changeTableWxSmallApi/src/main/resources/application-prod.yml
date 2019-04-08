@@ -1,0 +1,14 @@
+#server相关配置
+server:
+  port: 8888
+# ssf 相关配置
+#ssf:
+#  datasource:
+#    master:
+#      url: jdbc:mysql://rm-m5e9h6k1j132vccjd.mysql.rds.aliyuncs.com/dev_3ecrm?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+#      username: icourt3ecrm
+#      password: mW5nh_-N=4FHjrR3
+#  include-stacktrace: always
+
+jwt:
+  signature: 7kFsxas4WG6aLLH5owLvevE8dIK32FfNDEV

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qm.volkswagenChina.partsTransaction.smallUser.dao.ReplenishmentDao">
+    <resultMap id="BaseResultMap" type="com.qm.volkswagenChina.partsTransaction.smallUser.entity.ReplenishmentVo">
+        <result column="id" property="id"/>
+        <result column="mtlCode" property="mtlCode"/>
+        <result column="mtlName" property="mtlName"/>
+        <result column="qty" property="qty"/>
+        <result column="recipient" property="recipient"/>
+        <result column="cause" property="cause"/>
+        <result column="yhTime" property="yhTime"/>
+        <result column="shTime" property="shTime"/>
+        <result column="createrId" property="createrId"/>
+        <result column="status" property="status"/>
+
+    </resultMap>
+    <resultMap id="MtlMap" type="com.qm.volkswagenChina.partsTransaction.smallUser.entity.MtlVo">
+        <result column="id" property="id"/>
+        <result column="MtlCode" property="mtlCode"/>
+        <result column="MtlName" property="mtlName"/>
+        <result column="KLT_GLT" property="kltGlt"/>
+        <result column="Area" property="area"/>
+    </resultMap>
+    <select id="mtlHistory" resultMap="BaseResultMap">
+SELECT mtlCode,min(mtlName) as mtlName,max(DATE_FORMAT(yhTime,'%Y-%m-%d %H:%i:%s')) as yhTime,count(*) as cou  from replenishment  where status='Y'  GROUP BY  mtlCode order by count(*) desc,yhTime desc limit 0,3
+    </select>
+    <select id="mtlQuery" resultMap="MtlMap">
+select * from mtl where replace(MtlCode,' ','') like CONCAT(CONCAT('%', #{mtlCode}),'%')
+    </select>
+    <insert id="save"  useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO replenishment(mtlCode,mtlName,qty,status,yhTime,recipient,cause,createrId)
+        VALUE (#{mtlCode},#{mtlName},#{qty},'N',NOW(),#{recipient},#{cause},#{createrId})
+    </insert>
+    <select id="queryByStatusList" resultMap="BaseResultMap">
+        SELECT id,mtlCode,mtlName,qty,recipient,cause,createrId,DATE_FORMAT(yhTime,'%Y-%m-%d %H:%i:%s') as yhTime from replenishment where status=#{status} and createrId =#{createrId} ORDER BY yhTime DESC
+    </select>
+    <update id="update">
+        update replenishment set mtlCode=#{mtlCode},mtlName=#{mtlName},qty=#{qty},recipient=#{recipient},cause=#{cause} where id=#{id}
+    </update>
+    <update id="del">
+        delete from  replenishment  where id=#{id}
+    </update>
+    <select id="queryByStatusWanCList" resultMap="BaseResultMap">
+        SELECT id,mtlCode,mtlName,qty,recipient,cause,DATE_FORMAT(shTime,'%Y-%m-%d %H:%i:%s') as shTime,DATE_FORMAT(yhTime,'%Y-%m-%d %H:%i:%s') as yhTime,createrId from replenishment where status=#{status} and createrId =#{createrId}
+        <if test="mtlCode != null and mtlCode !=''"> and mtlCode like #{mtlCode}</if>
+           <if test="dateStart !=null and dateStart !='' ">
+                <![CDATA[ and date_format(shTime,'%Y-%m-%d') >=  #{dateStart}  ]]>
+            </if>
+              <if test="dateEnd !=null and dateEnd!='' "  >
+                  <![CDATA[ and date_format(shTime,'%Y-%m-%d') <=  #{dateEnd}  ]]>
+              </if>
+        ORDER BY shTime DESC
+    </select>
+
+    <select id="getReplenishmentById" resultMap="BaseResultMap">
+        SELECT id,mtlCode,mtlName,qty,recipient,cause,DATE_FORMAT(yhTime,'%Y-%m-%d %H:%i:%s') as yhTime ,DATE_FORMAT(shTime,'%Y-%m-%d %H:%i:%s') as shTime,createrId from replenishment where id=#{id}
+    </select>
+
+    <select id="queryByStatusWeiWCList" resultMap="BaseResultMap">
+        SELECT id,mtlCode,mtlName,qty,recipient,cause,DATE_FORMAT(shTime,'%Y-%m-%d %H:%i:%s') as shTime,DATE_FORMAT(yhTime,'%Y-%m-%d %H:%i:%s') as yhTime  from replenishment where status=#{status} and createrId =#{createrId}
+        <if test="mtlCode != null and mtlCode !=''"> and mtlCode like #{mtlCode}</if>
+        <if test="dateStart !=null and dateStart !='' ">
+            <![CDATA[ and date_format(yhTime,'%Y-%m-%d') >= #{dateStart}  ]]>
+        </if>
+        <if test="dateEnd !=null and dateEnd!='' "  >
+            <![CDATA[ and date_format(yhTime,'%Y-%m-%d') <=  #{dateEnd}  ]]>
+        </if>
+        ORDER BY yhTime DESC
+    </select>
+    <update id="QuerenUpdateById">
+        update replenishment set status='Y',shTime =NOW() ,recipient =#{recipient} where id=#{id}
+    </update>
+    <select id="getByIdtoStatus" resultMap="BaseResultMap">
+        SELECT status from replenishment where id=#{id}
+    </select>
+    <select id="QueryByMtlCode" resultMap="MtlMap">
+        select * from mtl where mtlCode=#{mtlCode}
+    </select>
+
+    <select id="shouHuoWCList" resultMap="BaseResultMap">
+        SELECT id,mtlCode,mtlName,qty,recipient,cause,DATE_FORMAT(shTime,'%Y-%m-%d %H:%i:%s') as shTime,DATE_FORMAT(yhTime,'%Y-%m-%d %H:%i:%s') as yhTime,createrId from replenishment where status=#{status} and recipient =#{recipient}
+        <if test="mtlCode != null and mtlCode !=''"> and mtlCode like #{mtlCode}</if>
+        <if test="dateStart !=null and dateStart !='' ">
+            <![CDATA[ and date_format(shTime,'%Y-%m-%d') >=  #{dateStart}  ]]>
+        </if>
+        <if test="dateEnd !=null and dateEnd!='' "  >
+            <![CDATA[ and date_format(shTime,'%Y-%m-%d') <=  #{dateEnd}  ]]>
+        </if>
+        ORDER BY shTime DESC
+    </select>
+
+</mapper>

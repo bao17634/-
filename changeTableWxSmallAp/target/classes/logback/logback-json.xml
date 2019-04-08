@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<included>
+    <include resource="logback/base.xml"/>
+    <appender name="server-json" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <layout class="com.qm.yqwl.core.log.JsonPatternLayout">
+            <pattern>%json %n</pattern>
+        </layout>
+        <Append>true</Append>
+        <File>${LOG_PATH}/bac-json.log</File>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/bac-json.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!--<maxHistory>15</maxHistory>-->
+        </rollingPolicy>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="server-json" />
+    </root>
+
+</included>

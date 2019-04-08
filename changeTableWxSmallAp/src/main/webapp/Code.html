@@ -1,0 +1,55 @@
+<script language="javascript">
+
+    function tableToWord() {
+
+        try
+
+        {
+            var oWD = new ActiveXObject("Word.Application");
+            var oDC = oWD.Documents.Add("",0,1);
+            var oRange =oDC.Range(0,1);
+            var sel = document.body.createTextRange();
+            sel.moveToElementText(theObjTable);
+            sel.select();
+            sel.execCommand("Copy");
+            oRange.Paste();
+            oWD.Application.Visible = true;
+
+        }
+
+        catch(e)
+        {
+            alert("您的电脑没有安装Microsoft Word软件！")
+            return false
+        }
+
+    }
+    function tableToExcel() {
+        window.clipboardData.setData("Text",document.all('theObjTable').outerHTML);
+        try
+        {
+            var ExApp = new ActiveXObject("Excel.Application")
+            var ExWBk = ExApp.workbooks.add()
+            var ExWSh = ExWBk.worksheets(1)
+            ExApp.DisplayAlerts = false
+            ExApp.visible = true
+        }
+        catch(e)
+        {
+            alert("您的电脑没有安装Microsoft Excel软件！")
+            return false
+        }
+        ExWBk.worksheets(1).Paste;
+    }
+</script>
+
+<table id=theObjTable>
+    <tr>
+        <td>a</td>
+        <td>b</td>
+    </tr>
+</table>
+
+<input type="button" value="导入到excel" onclick="tableToExcel()">
+
+<input type="button" value="导入到word" onclick="tableToWord()">

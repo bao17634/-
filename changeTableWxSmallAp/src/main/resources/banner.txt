@@ -1,0 +1,12 @@
+
+${AnsiColor.RED}   ____              _
+${AnsiColor.RED}  / __ \            | |
+${AnsiColor.RED} | |  | |_ __ ___   | |__   __ _  ___
+${AnsiColor.RED} | |  | | '_ ` _ \  | '_ \ / _` |/ __|
+${AnsiColor.RED} | |__| | | | | | | | |_) | (_| | (__
+${AnsiColor.RED}  \___\_\_| |_| |_| |_.__/ \__,_|\___|
+
+
+
+${Ansi.GREEN} :: qm base and common  :: ${Ansi.DEFAULT}${AnsiStyle.FAINT} Spring Boot${spring-boot.formatted-version}
+${Ansi.GREEN} :: liyangzxx@126.com   :: ${AnsiColor.DEFAULT}${AnsiColor.RED} bac (v1.0-SNAPSHOT)

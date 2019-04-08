@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ehcache>
+
+    <!-- 设置缓存文件创建路径 -->
+    <diskStore path="java.io.tmpdir"/>
+
+    <!--
+        maxEntriesLocalHeap ： 堆内存中最大缓存对象数，0没有限制；
+        eternal: true,对象是永久有效,timeout将被忽略；
+        timeToIdleSeconds: 缓存过期前的闲置时间；
+        timeToLiveSeconds: 缓存过期前的生存时间，创建时间到失效时间的间隔为存活时间；
+        注：timeToIdleSeconds和timeToLiveSeconds： 当eternal为false时，这个属性才有效，0为不限制；
+        maxEntriesLocalDisk： 磁盘中的最大对象数,默认为0不限制；
+        diskExpiryThreadIntervalSeconds： 使用过期算法清除磁盘中失效对象的间隔；
+        memoryStoreEvictionPolicy： 当超过最大内存限制时，根据指定的策略去清理内存。默认策略是LRU。
+        清理内存的三种算法： LRU（最近最少使用） 、LFU（较少使用）、FIFO（先进先出）
+         diskPersistant="true"，当应用重启时能恢复session中的值，很有用的配置项。
+         Ehcache的缓存的特点： 失效时间是按第一次缓存的时间来计算，也就是说同一缓存第一次放入30秒后失效，放入之后无论怎么操作，30秒之后都会失效。
+         来无事测试了下Ehcache与MemCache比较，在此发现了Ehcache中一个小细节问题，以前未用心去注意过，在此特记录一下，同时也望能给需要的道友留下些益处：
+        其中主要记录的是timeToLiveSeconds和timeToIdleSeconds；因为此俩容易搞混淆：
+        timeToLiveSeconds=x：缓存自创建日期起至失效时的间隔时间x；
+        timeToIdleSeconds=y：缓存创建以后，最后一次访问缓存的日期至失效之时的时间间隔y；
+
+        如果仅有 timeToLiveSeconds
+        那么 自创建时间开始 间隔x后缓存失效；
+        如果没有timeToLiveSeconds 那么自最后一次访问缓存 间隔y后 缓存失效；
+        如果既有timeToLiveSeconds 也有 timeToIdleSeconds 那么取最小数算作间隔时间；min(x,y);； 经过测试其计算原则是：若自创建缓存后一直都没有访问缓存，那么间隔x后失效，若自创建缓存后有N次访问缓存，那么计算（最后一次访问缓存时间+y ） 即：按照timeToIdleSeconds计算，但总存活时间不超过 y;举个例子：
+        timeToIdleSeconds=120；
+        timeToLiveSeconds=180；
+        上面的表示此缓存最多可以存活3分钟，如果期间超过2分钟未访问 那么此缓存失效！
+
+    -->
+    <!--
+        timeToLiveSeconds="0" 指定该缓存的最长生命周期为永远，而 timeToIdelSeconds="3600" 则指定了该缓存空闲达到 3600 秒时会被去除，diskPersistent="true" 确保在应用重启时不丢失缓存， 这个组合配置用做 session 很合适。
+    -->
+    <cache name="sessionCache"
+           maxElementsInMemory="10000"
+           maxElementsOnDisk="100000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="true"
+           diskPersistent="true"/>
+    <cache name="myCache"
+           maxElementsInMemory="10000"
+           maxElementsOnDisk="100000"
+           eternal="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="1800"
+           overflowToDisk="false"
+           diskPersistent="false">
+        <searchable keys="true" values="false"/>
+    </cache>
+</ehcache>

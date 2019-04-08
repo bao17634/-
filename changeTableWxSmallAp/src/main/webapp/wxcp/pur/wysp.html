@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./js/common.js"></script>
+    <title>我已审批</title>
+    
+</head>
+<body>
+<div id="root">
+    <div class="biaoqian"v-for="item in wyspList"  >
+        <p style="font-size: 18px;padding: 2px;font-family: 微软雅黑;color: black;padding-top: 10px">您已审批完成:</p>
+        <p>申请单号：{{item.purAppCode}}</p>
+        <p>申请部门：{{item.buyerDeptName}}</p>
+        <p>物料类别：{{item.mtCategory}}</p>
+        <p>归口划分：{{item.mtCategorySub}}</p>
+        <p>申请人：{{item.appUserName}}</p>
+        <p>申请时间：{{item.appDate}}</p>
+        <p>状态：{{item.status}}</p>
+        <p>成本中心：{{item.projName}}</p>
+        <p>总金额：{{item.budgetAmount}}</p>
+        <p class="tiaozhuan"><a :href=`http://mjl.faw.one/yqwl/wxcp/pur/wyspMx.html?purAppCode=${item.purAppCode}&purAppId=${item.purAppId}`>查看明细></a></p>
+    </div>
+</div>
+
+
+
+<script>
+
+    new Vue({
+        el: '#root',
+        data: {
+            wyspList:[]
+        },
+        created:function(){
+            const param = {};
+            this.$http.get('/wxcp/pur/historyMeData', {params: param}).then((result) => {
+                console.log(result);
+            if (result.isSuccess) {
+                this.wyspList = result.data;
+            }
+        })
+        },
+        methods: {
+        }
+    })
+
+</script>
+
+</body>
+</html>

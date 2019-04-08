@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qm.volkswagenChina.partsTransaction.smallUser.dao.ContactUsDao">
+
+  <insert id="contactUsSave">
+    INSERT INTO contact_us
+      (content,createBy,lastModifyBy,createDate,lastmodifyDate)
+    VALUE
+      (#{content},
+      #{createBy},
+      #{lastModifyBy},
+      NOW(),
+      NOW())
+  </insert>
+
+
+</mapper>

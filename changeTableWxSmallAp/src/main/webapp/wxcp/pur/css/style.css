@@ -1,0 +1,28 @@
+
+        html, body {
+            margin: 0px;
+            padding: 0px;
+            height: 100%;
+            background-color: #ebebeb;
+        }
+
+        .biaoqian {
+            background-color: white;
+            width: 85%;
+            margin: 5% auto;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .biaoqian p {
+            font-size: 15px;
+            margin-top: -10px;
+            padding-left: 20px;
+            color: #818181;
+        }
+
+        .tiaozhuan a {
+            font-size: 15px;
+            color: aqua;
+            text-decoration:none
+        }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qm.wxsmall.custom.smallUser.dao.UsersDao">
+  <resultMap id="BaseResultMap" type="com.qm.wxsmall.custom.smallUser.entity.UsersVo">
+      <result column="id" property="id"/>
+      <result column="nickName" property="nickName"/>
+      <result column="avatarUrl" property="avatarUrl"/>
+      <result column="gender" property="gender"/>
+      <result column="city" property="city"/>
+      <result column="province" property="province"/>
+      <result column="country" property="country"/>
+      <result column="language" property="language"/>
+      <result column="openId" property="openId"/>
+      <result column="tel" property="tel"/>
+      <result column="userName" property="userName"/>
+      <result column="type" property="type"/>
+      <result column="status" property="status"/>
+  </resultMap>
+    <insert id="save">
+        INSERT INTO small_user (id,openId)
+        VALUES (seq_newsid.nextval,#{openId})
+    </insert>
+    <select id="findByOpenId" resultMap="BaseResultMap">
+        SELECT * from small_user where openid=#{openId}
+    </select>
+    <update id="uploadByOpenId">
+        update small_user set LAST_LOGIN_DATE = sysdate where openid=#{openId}
+    </update>
+    <update id="deleteByOpenId">
+        delete from  small_user  where openid=#{openId}
+    </update>
+    <update id="bindUserById">
+        update small_user set tel = #{tel},userName=#{userName} where id=#{id}
+    </update>
+
+    <select id="getCreaterName" resultMap="BaseResultMap">
+        SELECT userName from small_user where id=#{id}
+    </select>
+    <select id="getRecipientName" resultMap="BaseResultMap">
+        SELECT userName from small_user where id=#{id}
+    </select>
+
+</mapper>

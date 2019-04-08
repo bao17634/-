@@ -1,0 +1,62 @@
+#日志输出目录
+logging:
+  path: /tmp
+
+#server相关配置
+server:
+  context-path: /ct
+
+wxSmall:
+    appid:  #AppId
+    secret:
+#spring配置
+spring:
+  jmx:
+    enabled: false
+  application:
+    name: yqwl-base #应用名
+  profiles:
+    active: dev #配置文件后缀名
+  http:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 50MB
+  datasource:
+    url: jdbc:oracle:thin: #数据库链接
+    username: 
+    password: scmdpt2012
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+  cache:
+    ehcache:
+      config: classpath:/ehcache.xml
+# 更多数据源
+custom:
+  datasource:
+    names: klySqlserver
+    klySqlserver:
+      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+      url:
+      username:
+      password:
+# ssf 相关配置
+#ssf:
+#  swagger:
+#    basePackage: com.qm.wxsmall
+#  datasource:
+#    master:
+#      maxActive: 50
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml
+
+management:
+  security:
+    enabled: false
+
+
+jwt:
+  signature: 7kFsxas4WG6aLLH5owLvevE8dIK32FfNDEV
+  iss_str: apollo
+  #单位 天
+  token_time_web: 1

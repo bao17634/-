@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qm.volkswagenChina.partsTransaction.smallUser.dao.SmallUserDao">
+  <resultMap id="BaseResultMap" type="com.qm.volkswagenChina.partsTransaction.smallUser.entity.SmallUser">
+      <result column="gid" property="gid"/>
+      <result column="openid" property="openId"/>
+      <result column="nickname" property="nickName"/>
+      <result column="gender" property="gender"/>
+      <result column="city" property="city"/>
+      <result column="province" property="province"/>
+      <result column="country" property="country"/>
+      <result column="avatarurl" property="avatarUrl"/>
+      <result column="unionid" property="unionId"/>
+      <result column="language" property="language"/>
+      <result column="last_login_ip" property="lastLoginIp"/>
+      <result column="last_login_date" property="lastLoginDate"/>
+      <result column="sys_user_real_name" property="sysUserRealName"/>
+      <result column="sys_user_id" property="sysUserId"/>
+  </resultMap>
+    <insert id="save">
+        INSERT INTO small_user(openid,nickname,gender,city,province,country,avatarurl,unionid,language,last_login_ip,last_login_date)
+        VALUE (#{openId},#{nickName},#{gender},#{city},#{province},#{country},#{avatarUrl},#{unionId},#{language},#{lastLoginIp},#{lastLoginDate})
+    </insert>
+    <select id="findByOpenId" resultMap="BaseResultMap">
+        SELECT * from small_user where openid=#{openId}
+    </select>
+    <update id="uploadByOpenId">
+        update small_user set nickname=#{nickName},gender=#{gender},city=#{city},province=#{province},country=#{country},avatarurl=#{avatarUrl},last_login_ip=#{lastLoginIp},last_login_date=#{lastLoginDate} where openid=#{openId}
+    </update>
+    <update id="deleteByOpenId">
+        delete from  small_user  where openid=#{openId}
+    </update>
+</mapper>

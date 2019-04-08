@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/example.js"></script>
+    <script src="js/index.js"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>采购审批</title>
+    <link type="text/css" rel="stylesheet" href="http://at.alicdn.com/t/font_595161_gbnelsw3sr2akyb9.css">
+    <link rel="stylesheet" href="css/index.css"/>
+
+
+</head>
+<body ontouchstart id="mybody">
+<div class="container-fluid" id="rootDiv">
+
+
+
+    <div class="container js_container bod">
+        <ul class="nav nav-tabs" role="tablist" >
+            <li role="presentation" class="active wid"><a href="#home" aria-controls="home" role="tab" style=" text-align:center;" data-toggle="tab"><div class="tab">我已审批</div></a></li>
+            <li role="presentation" class="wid"><a href="#profile" aria-controls="profile" role="tab"   style=" text-align:center;" data-toggle="tab"><div class="tab">审批历史</div></a></li>
+        </ul>
+        <div class="tab-content">
+            <!---待审批模块-->
+            <div role="tabpanel" class="tab-pane active" id="home">
+                <!--基础信息模块-->
+                <div class="biaoti">
+                    <div class="iconfont icon-webicon06">基础信息</div>
+                </div>
+                <div class="neirong" v-for="item in wyspList" >
+                    <p>申请单号：{{item.purAppCode}}</p>
+                    <p>申请部门：{{item.buyerDeptName}}</p>
+                    <p>物料类别：{{item.mtCategory}}</p>
+                    <p>归口划分：{{item.mtCategorySub}}</p>
+                    <p>申请人：{{item.appUserName}}</p>
+                    <p>申请时间：{{item.appDate}}</p>
+                    <p>状态：{{item.status}}</p>
+                    <p>成本中心：{{item.projName}}</p>
+                    <p>总金额：{{item.budgetAmount}}</p>
+                </div>
+
+                <!--申请明细模块-->
+                <div class="biaoti">
+                    <div class="iconfont icon-mingxi3">申请明细</div>
+                </div>
+                <div class="neirong" v-for="item in wyspMxList"  style="border-bottom: 1px dashed  #818181;margin-bottom: 20px">
+                    <p>产品号：{{item.itemNum}}</p>
+                    <p>产品名称：{{item.itemName}}</p>
+                    <p>产品规格：{{item.itemSpec}}</p>
+                    <p>计量单位：{{item.uomCode}}</p>
+                    <p>申请数量：{{item.quantity}}</p>
+                    <p>单价：{{item.assessUnitPrice}}</p>
+                    <p>总价：{{item.assessAmount}}</p>
+                    <p>备注：{{item.notes}}</p>
+                </div>
+
+            </div>
+            <!--审批历史模块-->
+            <div role="tabpanel" class="tab-pane " id="profile"  v-for="item in wyspHistoryList" >
+                <div class="biaoti">
+                    <div class="iconfont icon-06"> {{item.createDate}}</div>
+                </div>
+                <div class="neirong_btm">
+                    <p>审批人：{{item.arPartyId}}</p>
+                    <p>审批结果：{{item.arResult}}</p>
+                    <p>审批说明：{{item.arNote}}</p>
+                    <p>审批时间：{{item.arDate}}</p>
+                </div>
+            </div>
+            <!--审批拒绝弹出框-->
+            <div class="modal fade tanchu" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="message-text" class="control-label">请输入驳回原因:</label>
+                                    <textarea class="form-control" id="message-text"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer btnn">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+<script>
+
+
+
+    //获取地址栏参数，name:参数名称
+    function getUrlParms(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)
+            return unescape(r[2]);
+        return null;
+    }
+    var purAppCode = getUrlParms("purAppCode");
+    var purAppId = getUrlParms("purAppId");
+
+
+
+
+    new Vue({
+        el: '#rootDiv',
+        data: {
+            wyspList:[],
+            wyspMxList:[],
+            wyspHistoryList:[],
+
+        },
+        created:function(){
+            const param = {
+
+                purAppCode:purAppCode,
+                purAppId:purAppId,
+
+            };
+            this.$http.get('/wxcp/pur/historyMeMxData', {params: param}).then((result) => {
+                if (result.isSuccess) {
+                this.wyspList = result.data.wyspList;
+                this.wyspMxList = result.data.wyspMxList;
+                this.wyspHistoryList = result.data.wyspHistoryList;
+
+            }
+        })
+        },
+    })
+</script>
+
+</div>
+</body>
+</html>
